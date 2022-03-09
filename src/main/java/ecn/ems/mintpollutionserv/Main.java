@@ -83,7 +83,7 @@ public class Main {
         try {
             PreparedStatement stmtSuppress = connect.prepareStatement("DELETE FROM public.pollution");
             stmtSuppress.executeUpdate();
-            String query = "INSERT INTO pollution(latitude,longitude,no2,co,the_geom) VALUES(?,?,?,?,ST_Transform(ST_SetSRID(ST_Point(?,?),2154),4326))";
+            String query = "INSERT INTO pollution(latitude,longitude,no2,nox,pm10,pm2p5,the_geom) VALUES(?,?,?,?,?,?,ST_Transform(ST_SetSRID(ST_Point(?,?),2154),4326))";
             PreparedStatement stmt = connect.prepareStatement(query);
 
             BufferedReader csvReader = new BufferedReader(new FileReader(filename));
@@ -96,10 +96,12 @@ public class Main {
                         String[] data = row.split("  ");
                         stmt.setDouble(1, Double.parseDouble(data[1]));
                         stmt.setDouble(2, Double.parseDouble(data[2]));
-                        stmt.setDouble(3, Double.parseDouble(data[3]));
-                        stmt.setDouble(4, Double.parseDouble(data[4]));
-                        stmt.setDouble(5, Double.parseDouble(data[1]));
-                        stmt.setDouble(6, Double.parseDouble(data[2]));
+                        stmt.setDouble(3, Double.parseDouble(data[4]));
+                        stmt.setDouble(4, Double.parseDouble(data[5]));
+                        stmt.setDouble(5, Double.parseDouble(data[6]));
+                        stmt.setDouble(6, Double.parseDouble(data[7]));
+                        stmt.setDouble(7, Double.parseDouble(data[1]));
+                        stmt.setDouble(8, Double.parseDouble(data[2]));
                         stmt.executeUpdate();
                 }
                 i++;
@@ -126,7 +128,7 @@ public class Main {
     ) throws IOException, SQLException{
         // Slurp `resources/â€¦/compute_pollution.sql`
         String sql;
-        try (var inputStream = Main.class.getResourceAsStream("computePollution.sql")) {
+        try (var inputStream = Main.class.getResourceAsStream("computePollutionBicycle.sql")) {
             sql = new String(inputStream.readAllBytes());
         }
 
