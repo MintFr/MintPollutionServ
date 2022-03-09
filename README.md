@@ -16,12 +16,10 @@ The next step is to simplify data, because we have too much precision. Indeed, w
 ## 4 - Create concentration index for each edge
 Then, we need to create a concentration index, gathering all the polluting particles we took into account. In our case, it is NO2, PM10 and PM2.5 (PM stands for "Particle Matter"). Thus, we used a conversion array found on website of air quality organizations (from Bretagne and Centre regions), and we converted our concentrations with this array.
 
-![arrayConversion](Conversion from concentration into indexes)
+![Conversion from concentration into indexes](https://user-images.githubusercontent.com/25695519/157479922-fdad8cd2-d60a-412e-84ad-7406aa31c02e.png)
 
 The concentration index we used is the sum of the different indexes of particles.
 
 ## 5 - Final index by edge
 The last step to create our indexes is to take into account the geometry and especially the distance of the edge we consider. Indeed, the index of an edge of 600 meters should be different of an edge of 30 meters, even if the concentration are equivalents.
-Therefore, we chose this formula to get our final indexes : 
-
-$$ i_{final} = i_{concentration} \times \dfrac {1}{2} $$
+Therefore, we chose to multiply our concentration index by the time spent on the edge, ie the length of the edge divided by the speed. The speed is different for every transportation, and we chose to use : 6 km/h for pedestrians, 15 km/h for bicycles and the edge limitation for cars. 
